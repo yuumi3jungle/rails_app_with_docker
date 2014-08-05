@@ -8,6 +8,6 @@ ADD . /home/app
 RUN rake tmp:clear
 RUN rake log:clear
 
-VOLUME  ["/home/app/log"]
+VOLUME  ["/home/app"]
 
 ENTRYPOINT bin/start_server.sh

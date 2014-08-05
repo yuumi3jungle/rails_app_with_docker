@@ -1,21 +1,19 @@
 #
 namespace :docker do
-  desc "Build Nginx container"
-  task :build_nginx do
-    Rake::Task['assets:precompile'].invoke
-    sh "cp Dockerfile.nginx Dockerfile"
-    sh "docker build  -t nginx ."
+  desc "Build Postgresql container"
+  task :build_pg do
+    sh "docker build  -t pg config/docker/pg"
   end
 
-  desc "Run Nginx container"
-  task :run_nginx do
-    sh "docker run -d -p 80:80 --link app:app --name nginx -t nginx"
+  desc "Run Postgresql container"
+  task :run_pg do
+    sh "docker run -d -p 5432:5432 --name pg -t pg"
     sh "docker ps"
   end
 
   desc "Build Rails application container"
   task :build_app do
-    sh "cp Dockerfile.app Dockerfile"
+    Rake::Task['assets:precompile'].invoke
     sh "docker build  -t app ."
   end
 
@@ -25,15 +23,14 @@ namespace :docker do
     sh "docker ps"
   end
 
-  desc "Build Postgresql container"
-  task :build_pg do
-    sh "cp Dockerfile.pg Dockerfile"
-    sh "docker build  -t pg ."
+  desc "Build Nginx container"
+  task :build_nginx do
+    sh "docker build  -t nginx config/docker/nginx"
   end
 
-  desc "Run Postgresql container"
-  task :run_pg do
-    sh "docker run -d -p 5432:5432 --name pg -t pg"
+  desc "Run Nginx container"
+  task :run_nginx do
+    sh "docker run -d -p 80:80 --link app:app --volumes-from app --name nginx -t nginx"
     sh "docker ps"
   end
 end
