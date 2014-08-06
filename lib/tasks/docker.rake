@@ -7,7 +7,7 @@ namespace :docker do
 
   desc "Run Postgresql container"
   task :run_pg do
-    sh "docker run -d -p 5432:5432 --name pg -t pg"
+    sh "docker run -d -p 5432:5432 --name pg pg"
     sh "docker ps"
   end
 
@@ -19,7 +19,7 @@ namespace :docker do
 
   desc "Run Rails application container"
   task :run_app do
-    sh "docker run -d -p 3000:3000 --link pg:db --name app -t app"
+    sh "docker run -d -p 3000:3000 --link pg:db --name app app"
     sh "docker ps"
   end
 
@@ -30,7 +30,7 @@ namespace :docker do
 
   desc "Run Nginx container"
   task :run_nginx do
-    sh "docker run -d -p 80:80 --link app:app --volumes-from app --name nginx -t nginx"
+    sh "docker run -d -p 80:80 --link app:app --volumes-from app --name nginx nginx"
     sh "docker ps"
   end
 end
